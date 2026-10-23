@@ -1,0 +1,165 @@
+---
+interface Props {
+  description: string;
+  caption: string;
+}
+const { description, caption } = Astro.props;
+const meridians = [40, 85, 130, 170, 195];
+const parallels = [-150, -100, -50, 0, 50, 100, 150];
+---
+
+<figure class="network-art" aria-label={description}>
+  <div class="art-topline mono" aria-hidden="true">
+    <span>CONNECTION FIELD / 01</span>
+    <span class="art-cross">+</span>
+  </div>
+  <svg
+    class="network-sphere"
+    viewBox="0 0 600 570"
+    fill="none"
+    aria-hidden="true"
+  >
+    <defs>
+      <radialGradient id="sphere-halo">
+        <stop stop-color="#77e8bc" stop-opacity=".10" />
+        <stop offset="1" stop-color="#77e8bc" stop-opacity="0" />
+      </radialGradient>
+      <linearGradient
+        id="sphere-line"
+        x1="100"
+        y1="70"
+        x2="480"
+        y2="490"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop stop-color="#a2f7d1" />
+        <stop offset=".45" stop-color="#4a8877" />
+        <stop offset="1" stop-color="#183b32" />
+      </linearGradient>
+      <linearGradient
+        id="orbit-line"
+        x1="65"
+        y1="400"
+        x2="520"
+        y2="130"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop stop-color="#304e42" />
+        <stop offset=".6" stop-color="#a1ffcf" />
+        <stop offset="1" stop-color="#527c69" />
+      </linearGradient>
+      <pattern
+        id="art-grid"
+        width="30"
+        height="30"
+        patternUnits="userSpaceOnUse"
+      >
+        <path d="M30 0H0v30" stroke="#2d4d40" stroke-width=".45" />
+      </pattern>
+      <radialGradient id="grid-mask">
+        <stop stop-color="white" stop-opacity=".8" />
+        <stop offset="1" stop-color="white" stop-opacity="0" />
+      </radialGradient>
+      <mask id="art-mask">
+        <rect width="600" height="570" fill="url(#grid-mask)" />
+      </mask>
+    </defs>
+    <rect
+      width="600"
+      height="570"
+      fill="url(#art-grid)"
+      mask="url(#art-mask)"
+    />
+    <circle cx="306" cy="277" r="270" fill="url(#sphere-halo)" />
+    <circle
+      cx="306"
+      cy="277"
+      r="247"
+      stroke="#3c5a4c"
+      stroke-width=".7"
+      stroke-dasharray="2 7"
+    />
+    <path d="M306 16v20m0 481v20M46 277h20m480 0h20" stroke="#597a66" />
+    <g class="sphere-motion">
+      <g
+        class="sphere-wire"
+        transform="rotate(-24 306 277)"
+        stroke="url(#sphere-line)"
+        stroke-width=".8"
+      >
+        <circle cx="306" cy="277" r="207" />
+        {meridians.map((radius) => (
+          <ellipse cx="306" cy="277" rx={radius} ry="207" />
+        ))}
+        {parallels.map((offset) => (
+          <ellipse
+            cx="306"
+            cy={277 + offset}
+            rx={Math.sqrt(207 ** 2 - offset ** 2)}
+            ry={Math.sqrt(207 ** 2 - offset ** 2) * 0.22}
+          />
+        ))}
+        <path d="M99 277h414M306 70v414" />
+      </g>
+      <ellipse
+        class="sphere-orbit"
+        cx="306"
+        cy="277"
+        rx="270"
+        ry="83"
+        transform="rotate(-32 306 277)"
+        stroke="url(#orbit-line)"
+        stroke-width="1.3"
+      />
+      <path
+        class="sphere-signal"
+        d="M78 420C165 400 407 244 534 134"
+        stroke="#a2f7d1"
+        stroke-opacity=".55"
+        stroke-dasharray="3 8"
+      />
+    </g>
+    <g stroke="#91dcb5" stroke-width=".8">
+      <path d="M176 148h-53l-29-29H47M442 236h45l26-26h40M264 450v39l-22 22H124" />
+      <circle cx="176" cy="148" r="4" fill="#a2f7d1" />
+      <circle cx="176" cy="148" r="10" stroke-opacity=".3" />
+      <circle cx="442" cy="236" r="4" fill="#a2f7d1" />
+      <circle cx="442" cy="236" r="10" stroke-opacity=".3" />
+      <circle cx="264" cy="450" r="4" fill="#a2f7d1" />
+      <circle cx="264" cy="450" r="10" stroke-opacity=".3" />
+    </g>
+    <g
+      class="art-label"
+      fill="#c3dccd"
+      font-family="Manrope Variable, sans-serif"
+      font-size="12"
+      letter-spacing="1.5"
+    >
+      <text x="47" y="107">
+        O-RAN / vRAN
+      </text>
+      <text x="487" y="197">
+        OAM / O1
+      </text>
+      <text x="124" y="532">
+        CNF DEPLOYMENT
+      </text>
+    </g>
+    <g fill="#6d927d" font-family="monospace" font-size="9" letter-spacing="2">
+      <text x="281" y="55">
+        OPEN RAN
+      </text>
+      <text x="475" y="454">
+        VIRTUALIZED
+      </text>
+    </g>
+    <circle class="sphere-point" cx="497" cy="161" r="4" fill="#d0ffdc" />
+  </svg>
+  <figcaption>
+    <span class="status-dot" aria-hidden="true"></span>
+    <span>{caption}</span>
+    <span class="art-index mono" aria-hidden="true">
+      [ RAN ]
+    </span>
+  </figcaption>
+</figure>

@@ -1,0 +1,382 @@
+---
+import '@fontsource-variable/manrope';
+import '@fontsource-variable/noto-sans-kr';
+import '../styles/global.css';
+import Icon from '../components/Icon.astro';
+import NetworkArt from '../components/NetworkArt.astro';
+import { portfolio, profile, type Locale } from '../data/portfolio';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const copy = portfolio[locale];
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const koreanPath = `${base}/`;
+const englishPath = `${base}/en/`;
+const canonical = new URL(
+  locale === 'ko' ? koreanPath : englishPath,
+  Astro.site,
+);
+const icons = ['network', 'controls', 'stack'] as const;
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={copy.description} />
+    <meta name="theme-color" content="#0b100f" />
+    <title>{copy.title}</title>
+    <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
+    <link rel="canonical" href={canonical} />
+    <link
+      rel="alternate"
+      hreflang="ko"
+      href={new URL(koreanPath, Astro.site)}
+    />
+    <link
+      rel="alternate"
+      hreflang="en"
+      href={new URL(englishPath, Astro.site)}
+    />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href={new URL(koreanPath, Astro.site)}
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={copy.title} />
+    <meta property="og:description" content={copy.description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={locale === 'ko' ? 'ko_KR' : 'en_US'} />
+    <meta
+      property="og:locale:alternate"
+      content={locale === 'ko' ? 'en_US' : 'ko_KR'}
+    />
+    <meta property="og:site_name" content="Bosoo Kim" />
+    <meta name="twitter:card" content="summary" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main">
+      {copy.skip}
+    </a>
+    <header class="site-header">
+      <div class="header-inner container">
+        <a
+          class="brand"
+          href={locale === 'ko' ? koreanPath : englishPath}
+          aria-label={copy.home}
+        >
+          <svg
+            width="30"
+            height="30"
+            viewBox="0 0 30 30"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M5 23V7h8a5 5 0 0 1 0 10H5m8 0h5a3 3 0 0 1 0 6H5M22 7v10m-5-5h10"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <span>
+            Bosoo Kim<span class="brand-period">.</span>
+          </span>
+        </a>
+        <nav
+          class="main-nav"
+          aria-label={locale === 'ko' ? '주 메뉴' : 'Main navigation'}
+        >
+          <a href="#focus" data-nav="focus">
+            {copy.nav.focus}
+            <span class="nav-index" aria-hidden="true">
+              01
+            </span>
+          </a>
+          <a href="#journey" data-nav="journey">
+            {copy.nav.journey}
+            <span class="nav-index" aria-hidden="true">
+              02
+            </span>
+          </a>
+          <a href="#contact" data-nav="contact">
+            {copy.nav.contact}
+            <Icon name="diagonal" />
+          </a>
+        </nav>
+        <nav class="language-nav mono" aria-label={copy.language}>
+          <a
+            href={koreanPath}
+            lang="ko"
+            hreflang="ko"
+            data-language="ko"
+            aria-current={locale === 'ko' ? 'page' : undefined}
+            aria-label="한국어"
+          >
+            KO
+          </a>
+          <span aria-hidden="true">/</span>
+          <a
+            href={englishPath}
+            lang="en"
+            hreflang="en"
+            data-language="en"
+            aria-current={locale === 'en' ? 'page' : undefined}
+            aria-label="English"
+          >
+            EN
+          </a>
+        </nav>
+      </div>
+      <div class="reading-progress" aria-hidden="true"></div>
+    </header>
+
+    <main id="main">
+      <section class="hero container" aria-labelledby="hero-title">
+        <div class="hero-overline mono">
+          <span>
+            <i class="status-dot" aria-hidden="true"></i>O-RAN · vRAN
+            ENGINEERING
+          </span>
+          <span>PORTFOLIO / {profile.year}</span>
+        </div>
+        <div class="hero-layout">
+          <div class="hero-copy">
+            <p class="eyebrow hero-name">{copy.hero.eyebrow}</p>
+            <h1 id="hero-title">
+              <span class="hero-intro">{copy.hero.intro}</span>
+              <span>{copy.hero.lines[0]}</span>
+              <span class="text-accent">{copy.hero.lines[1]}</span>
+            </h1>
+            <p class="hero-description preserve-lines">
+              {copy.hero.description}
+            </p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#journey">
+                {copy.hero.primary}
+                <Icon />
+              </a>
+              <a class="button button-text" href={`mailto:${profile.email}`}>
+                {copy.hero.secondary}
+                <Icon name="diagonal" />
+              </a>
+            </div>
+          </div>
+          <NetworkArt
+            description={copy.hero.artDescription}
+            caption={copy.hero.artCaption}
+          />
+        </div>
+        <div class="hero-bottom">
+          <div class="career-range">
+            <span class="mono">2003 — 2026</span>
+            <span>{copy.hero.range}</span>
+          </div>
+          <p class="evolution mono">
+            <span>MOBILE</span>
+            <span aria-hidden="true">↗</span>
+            <span>RADIO</span>
+            <span aria-hidden="true">↗</span>
+            <strong>CLOUD-NATIVE RAN</strong>
+          </p>
+          <a href="#focus" class="scroll-link mono">
+            <span>{copy.hero.scroll}</span>
+            <span aria-hidden="true">↓</span>
+          </a>
+        </div>
+      </section>
+
+      <section
+        id="focus"
+        class="focus-section section container"
+        aria-labelledby="focus-title"
+        data-section
+      >
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">{copy.focus.eyebrow}</p>
+            <h2 id="focus-title">
+              {copy.focus.title[0]}
+              <br />
+              <span class="text-muted">{copy.focus.title[1]}</span>
+            </h2>
+          </div>
+          <p class="section-description preserve-lines">
+            {copy.focus.description}
+          </p>
+        </div>
+        <div class="focus-grid">
+          {copy.focus.items.map((item, index) => (
+            <article class="focus-item">
+              <div class="focus-item-top">
+                <Icon name={icons[index]} />
+                <span class="mono">0{index + 1}</span>
+              </div>
+              <p class="focus-subtitle mono">{item.subtitle}</p>
+              <h3>{item.title}</h3>
+              <p class="focus-description">{item.description}</p>
+              <ul
+                class="tags"
+                aria-label={locale === 'ko' ? '기술 분야' : 'Technologies'}
+              >
+                {item.tags.map((tag) => (
+                  <li>{tag}</li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section
+        id="journey"
+        class="journey-section section"
+        aria-labelledby="journey-title"
+        data-section
+      >
+        <div class="journey-layout container">
+          <div class="journey-intro">
+            <p class="eyebrow">{copy.journey.eyebrow}</p>
+            <h2 id="journey-title">
+              {copy.journey.title[0]}
+              <br />
+              <span class="text-muted">{copy.journey.title[1]}</span>
+            </h2>
+            <p class="section-description preserve-lines">
+              {copy.journey.description}
+            </p>
+            <div class="journey-date">
+              <span class="large-date">2003</span>
+              <span class="date-line" aria-hidden="true"></span>
+              <span class="large-date text-accent">2026</span>
+            </div>
+            <p class="journey-range">{copy.journey.range}</p>
+            <div class="journey-key mono" aria-hidden="true">
+              <span>UI</span>
+              <span>→</span>
+              <span>BSP</span>
+              <span>→</span>
+              <span>RADIO</span>
+              <span>→</span>
+              <span>vRAN</span>
+            </div>
+          </div>
+          <ol class="timeline">
+            {copy.journey.items.map((item, index) => (
+              <li class="timeline-item" data-experience={index}>
+                <span class="timeline-node" aria-hidden="true"></span>
+                <article aria-labelledby={`experience-${index}`}>
+                  <div class="timeline-meta">
+                    <p class="period mono">{item.period}</p>
+                    <span class="chapter mono" aria-hidden="true">
+                      0{copy.journey.items.length - index}
+                    </span>
+                  </div>
+                  <p class="discipline mono">{item.discipline}</p>
+                  <h3 id={`experience-${index}`}>{item.title}</h3>
+                  <p class="experience-description">{item.description}</p>
+                  <ul class="experience-details">
+                    {item.details.map((detail) => (
+                      <li>{detail}</li>
+                    ))}
+                  </ul>
+                  <ul
+                    class="tags"
+                    aria-label={locale === 'ko' ? '사용 기술' : 'Technologies'}
+                  >
+                    {item.tags.map((tag) => (
+                      <li>{tag}</li>
+                    ))}
+                  </ul>
+                </article>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section
+        id="contact"
+        class="contact-section section container"
+        aria-labelledby="contact-title"
+        data-section
+      >
+        <div class="contact-heading">
+          <div>
+            <p class="eyebrow">{copy.contact.eyebrow}</p>
+            <h2 id="contact-title">
+              {copy.contact.title[0]}
+              <br />
+              <span class="text-accent">{copy.contact.title[1]}</span>
+            </h2>
+          </div>
+          <svg
+            class="contact-orbit"
+            viewBox="0 0 180 180"
+            fill="none"
+            aria-hidden="true"
+          >
+            <circle
+              cx="90"
+              cy="90"
+              r="78"
+              stroke="currentColor"
+              stroke-opacity=".2"
+            />
+            <ellipse
+              cx="90"
+              cy="90"
+              rx="78"
+              ry="30"
+              transform="rotate(-35 90 90)"
+              stroke="currentColor"
+              stroke-opacity=".5"
+            />
+            <path
+              d="m66 113 49-49H67m48 0v48"
+              stroke="currentColor"
+              stroke-width="1.5"
+            />
+          </svg>
+        </div>
+        <p class="section-description preserve-lines">
+          {copy.contact.description}
+        </p>
+        <a
+          class="email-link"
+          href={`mailto:${profile.email}`}
+          aria-label={`${copy.contact.email}: ${profile.email}`}
+        >
+          <span>{profile.email}</span>
+          <Icon name="diagonal" />
+        </a>
+        <div class="contact-links">
+          <a href={profile.github} target="_blank" rel="noopener noreferrer">
+            {copy.contact.github}
+            <Icon name="diagonal" />
+          </a>
+          <span class="mono">BOSOO KIM / 김보수</span>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer container">
+      <p>
+        © {profile.year} Bosoo Kim
+        <span class="footer-note"> — {copy.footer.note}</span>
+      </p>
+      <a href="#top">
+        {copy.footer.top}
+        <Icon name="up" />
+      </a>
+    </footer>
+    <script>
+      import '../scripts/interactions';
+    </script>
+  </body>
+</html>
