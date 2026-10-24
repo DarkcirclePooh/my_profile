@@ -140,7 +140,7 @@ export const portfolio: Record<Locale, PortfolioCopy> = {
           discipline: 'RADIO PROTOCOL & VALIDATION',
           title: 'LTE에서 5G까지, 연결을 검증하다',
           description:
-            '미국 통신사향 스마트폰의 Radio Protocol 개발과 네트워크 상호운용 검증을 수행했습니다.',
+            '북미 주요 통신사(VZW,AT&T,T-mobile..) 스마트폰의 Radio Protocol 개발과 네트워크 상호운용 검증을 수행했습니다.',
           details: [
             'VZW향 세계 최초 LTE / CDMA 듀얼 모드 스마트폰 개발',
             'AT&T / T-Mobile향 스마트폰 개발 — Radio Protocol',
